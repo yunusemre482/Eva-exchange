@@ -1,0 +1,31 @@
+version: '3.8'
+services:
+    postgres:
+      image: postgres:latest
+      ports:
+        - 5432:5432
+      volumes:
+        - postgres-data:/var/lib/postgresql/data
+      environment:
+        - POSTGRES_USER=root
+        - POSTGRES_PASSWORD=example
+        - POSTGRES_DB=evaDb
+      networks:
+        - postgres-db-network
+
+
+    postgres_adminer:
+      image: adminer
+      ports:
+        - 8080:8080
+      depends_on:
+        - postgres
+      networks:
+        - postgres-db-network
+
+
+volumes:
+    postgres-data:
+networks:
+    postgres-db-network:
+        driver: bridge
