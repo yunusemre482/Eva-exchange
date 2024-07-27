@@ -5,10 +5,47 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int         @id @default(autoincrement())
+  email      String      @unique
+  portfolios Portfolio[]
+}
+
+model Portfolio {
+  id     Int     @id @default(autoincrement())
+  userId Int
+  user   User    @relation(fields: [userId], references: [id])
+  trades Trade[]
+}
+
+model Share {
+  id     Int     @id @default(autoincrement())
+  symbol String  @unique
+  price  Float
+  trades Trade[]
+}
+
+model Trade {
+  id          Int       @id @default(autoincrement())
+  portfolioId Int
+  portfolio   Portfolio @relation(fields: [portfolioId], references: [id])
+  shareId     Int
+  share       Share     @relation(fields: [shareId], references: [id])
+  type        TradeType
+  quantity    Int
+  price       Float
+  createdAt   DateTime  @default(now())
+}
+
+enum TradeType {
+  BUY
+  SELL
 }

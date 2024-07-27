@@ -9,7 +9,7 @@ services:
       environment:
         - POSTGRES_USER=root
         - POSTGRES_PASSWORD=example
-        - POSTGRES_DB=evaDb
+        - POSTGRES_DB=evaexchange
       networks:
         - postgres-db-network
 
