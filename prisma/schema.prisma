@@ -26,19 +26,24 @@ model User {
 }
 
 model Portfolio {
-  id     String  @id @default(uuid())
-  userId String
-  user   User    @relation(fields: [userId], references: [id])
-  trades Trade[]
+  id        String    @id @default(uuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id])
+  shares    Share[]
+  trades    Trade[]
+  quantity  Int       @default(0)
+  deletedAt DateTime?
 }
 
 model Share {
-  id        String   @id @default(uuid())
-  symbol    String   @unique
-  price     Float
-  trades    Trade[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String     @id @default(uuid())
+  symbol      String     @unique
+  price       Float
+  trades      Trade[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  portfolio   Portfolio? @relation(fields: [portfolioId], references: [id])
+  portfolioId String?
 }
 
 model Trade {

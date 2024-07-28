@@ -31,7 +31,8 @@ async function main() {
             const shares = await Promise.all(users.map(async (user) => {
                 return tx.share.create({
                     data: {
-                        symbol: faker.finance.currencyCode() + faker.number.int({ min: 100, max: 999 }),
+                        // generate 3 character symbol like 'APL'
+                        symbol: faker.random.word().toUpperCase().slice(0, 3),
                         price: faker.number.float({ min: 10, max: 1000, precision: 0.01 }),
                     },
                 });
