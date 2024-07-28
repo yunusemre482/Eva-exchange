@@ -5,7 +5,7 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider        = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -14,35 +14,53 @@ datasource db {
 }
 
 model User {
-  id         Int         @id @default(autoincrement())
+  id         String      @id @default(uuid())
   email      String      @unique
+  password   String
   portfolios Portfolio[]
+  roles      String[]    @default(["user"])
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  balance    Decimal     @default(0.00) @db.Decimal(10, 2)
+  Trade      Trade[]
 }
 
 model Portfolio {
-  id     Int     @id @default(autoincrement())
-  userId Int
+  id     String  @id @default(uuid())
+  userId String
   user   User    @relation(fields: [userId], references: [id])
   trades Trade[]
 }
 
 model Share {
-  id     Int     @id @default(autoincrement())
-  symbol String  @unique
-  price  Float
-  trades Trade[]
+  id        String   @id @default(uuid())
+  symbol    String   @unique
+  price     Float
+  trades    Trade[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Trade {
-  id          Int       @id @default(autoincrement())
-  portfolioId Int
+  id          String    @id @default(uuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  portfolioId String
   portfolio   Portfolio @relation(fields: [portfolioId], references: [id])
-  shareId     Int
+  shareId     String
   share       Share     @relation(fields: [shareId], references: [id])
   type        TradeType
   quantity    Int
   price       Float
   createdAt   DateTime  @default(now())
+
+  @@index([userId], name: "userId")
+  @@index([portfolioId], name: "portfolioId")
+  @@index([shareId], name: "shareId")
+  @@index([createdAt], name: "createdAt")
+  @@index([userId, portfolioId, shareId], name: "userId_portfolioId_shareId")
+  @@index([userId, shareId], name: "userId_shareId")
+  @@map("Trade")
 }
 
 enum TradeType {
