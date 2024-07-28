@@ -3,7 +3,10 @@ import { ShareService } from './share.service';
 import { CreateShareDTO } from './dto/create-share.dto';
 import { UpdateSharePriceDTO } from './dto/update-share-price.dto';
 
-@Controller('shares')
+@Controller({
+    path: 'shares',
+    version: '1'
+})
 export class ShareController {
 
     constructor(

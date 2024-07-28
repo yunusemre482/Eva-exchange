@@ -1,16 +1,17 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
 import { UpdateSharePriceDTO } from './dto/update-share-price.dto';
+import { PrismaService } from '@/infrastructure/prisma/prisma.service';
+import { CreateShareDTO } from './dto/create-share.dto';
 
 @Injectable()
 export class ShareService {
 
     constructor(
-        private readonly prismaClient: PrismaClient,
+        private readonly prismaClient: PrismaService,
     ) { }
 
 
-    public async create(share: any): Promise<any> {
+    public async create(share: CreateShareDTO): Promise<any> {
         return this.prismaClient.share.create({
             data: share,
         });

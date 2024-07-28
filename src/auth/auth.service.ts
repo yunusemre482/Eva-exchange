@@ -13,7 +13,6 @@ export class AuthService {
 
     constructor(
         private readonly configService: ConfigService,
-        @Inject()
         private readonly userService: UsersService,
         private readonly jwtService: JwtService,
     ) { }

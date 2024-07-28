@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
 import { DecreaseBalanceDTO, IncreaseBalanceDTO } from './dto/update-balance.dto';
+import { PrismaService } from '@/infrastructure/prisma/prisma.service';
 
 @Injectable()
 export class UsersService {
@@ -8,7 +8,7 @@ export class UsersService {
         // You can inject the Prisma client into the service
         // by adding it to the constructor
         // For example, you can inject the Prisma client like this:
-        private readonly prisma: PrismaClient,
+        private readonly prisma: PrismaService,
     ) { }
 
     public async create(user: any): Promise<any> {
