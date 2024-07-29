@@ -3,8 +3,7 @@ import { IsNotEmpty, IsNumber } from "class-validator";
 
 export class UpdateSharePriceDTO {
 
-    @IsNumber()
-    @IsNotEmpty()
     @Transform(({ value }) => parseFloat(value).toFixed(2))
+    @IsNotEmpty()
     price: number;
 }

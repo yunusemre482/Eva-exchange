@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Share" ALTER COLUMN "price" SET DEFAULT 0.00;

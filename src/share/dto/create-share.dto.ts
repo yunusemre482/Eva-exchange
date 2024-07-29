@@ -9,7 +9,7 @@ export class CreateShareDTO {
     symbol: string;
 
 
-    @IsNumber()
+
     @IsNotEmpty()
     @Transform(({ value }) => parseFloat(value).toFixed(2))
     price: number;

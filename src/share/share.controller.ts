@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { ShareService } from './share.service';
 import { CreateShareDTO } from './dto/create-share.dto';
 import { UpdateSharePriceDTO } from './dto/update-share-price.dto';
@@ -38,7 +38,7 @@ export class ShareController {
         return this.shareService.create(share);
     }
 
-    @Post(":id/price")
+    @Patch(":id")
     async updatePrice(
         @Param("id") id: string,
         @Body() priceUpdate: UpdateSharePriceDTO,
