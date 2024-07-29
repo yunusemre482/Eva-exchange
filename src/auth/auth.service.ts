@@ -5,7 +5,6 @@ import { JwtService } from '@nestjs/jwt';
 import { RegisterDTO } from './dto/register.dto';
 import * as argon from 'argon2';
 import { LoginDTO } from './dto/login.dto';
-import { access } from 'fs';
 
 @Injectable()
 export class AuthService {
@@ -86,9 +85,6 @@ export class AuthService {
     async validateToken(token: string): Promise<any> {
 
         const decodedToken = await this.decodeToken(token);
-
-
-        this.logger.debug(`Decoded token: ${JSON.stringify(decodedToken)}`);
 
         return decodedToken;
     }

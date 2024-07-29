@@ -32,10 +32,11 @@ export class CustomAuthGuard extends AuthGuard("jwt") {
             const token = this.extractTokenFromRequest(req);
 
 
-            console.log('token', token);
-
-
             const user = await this.authService.validateToken(token);
+
+            if (!user) {
+                throw new UnauthorizedException("Invalid access token");
+            }
 
             req.user = user;
             return true;
