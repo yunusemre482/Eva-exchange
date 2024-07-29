@@ -85,3 +85,4 @@ The application follows the RESTful API principles. Below are the main endpoints
 
 You can find the API documentation at the following
 link: [API Documentation](https://www.postman.com/yunusemre482/workspace/eva-exchange)
+# turkai
