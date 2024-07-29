@@ -30,6 +30,7 @@ export class TradeController {
         return this.tradeService.getTradesByUserId(userId);
     }
 
+    @UseGuards(CustomAuthGuard)
     @Post("buy")
     public async createBuyTrade(
         @User("id") userId: string,

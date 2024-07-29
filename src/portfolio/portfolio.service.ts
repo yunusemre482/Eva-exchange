@@ -54,6 +54,7 @@ export class PortfolioService {
                         },
                     },
                 },
+                quantity: true,
                 deletedAt: true,
             },
         });

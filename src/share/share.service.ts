@@ -78,7 +78,15 @@ export class ShareService {
 
 
     async getAll(): Promise<any> {
-        const shares = await this.prismaClient.share.findMany();
+        const shares = await this.prismaClient.share.findMany({
+            select: {
+                id: true,
+                symbol: true,
+                price: true,
+                createdAt: true,
+                updatedAt: true,
+            },
+        })
 
         return shares;
     }

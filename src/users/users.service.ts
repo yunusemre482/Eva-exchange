@@ -1,9 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { DecreaseBalanceDTO, IncreaseBalanceDTO } from './dto/update-balance.dto';
 import { PrismaService } from '@/infrastructure/prisma/prisma.service';
 
 @Injectable()
 export class UsersService {
+    private readonly logger = new Logger(UsersService.name);
+
     constructor(
         // You can inject the Prisma client into the service
         // by adding it to the constructor
@@ -68,6 +70,9 @@ export class UsersService {
     }
 
     async decreaseBalance(id: string, balanceDto: DecreaseBalanceDTO): Promise<any> {
+
+        this.logger.debug(`Decreasing balance of user with id ${id} by ${balanceDto.amount}`);
+
         const user = await this.prisma.user.update({
             where: {
                 id: id,

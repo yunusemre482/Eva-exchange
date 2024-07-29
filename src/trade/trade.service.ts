@@ -26,7 +26,7 @@ export class TradeService {
             const user = await this.userService.getById(userId);
 
             // If the application encounters an error along the way, the async function will throw an exception and automatically rollback the transaction.
-            const transaction = await this.prismaClient.$transaction(async (tx) => {
+            return await this.prismaClient.$transaction(async (tx) => {
                 const share = await this.shareService.getById(createBuyTradeDTO.shareId);
 
                 if (!share) {
@@ -39,12 +39,17 @@ export class TradeService {
                     throw new BadRequestException('Insufficient balance');
                 }
 
+
                 const portfolio = await tx.portfolio.findFirst({
                     where: {
                         userId: user.id,
                         deletedAt: null,
                     },
                 });
+
+                if (!portfolio) {
+                    throw new NotFoundException('Portfolio not found');
+                }
 
 
                 const trade = await tx.trade.create({
@@ -72,12 +77,21 @@ export class TradeService {
                     },
                 });
 
+                await tx.share.update({
+                    where: {
+                        id: share.id,
+                    },
+                    data: {
+                        portfolioId: portfolio.id,
+                    },
+                });
+
                 return trade;
             })
 
         } catch (err) {
             this.logger.error(err);
-            throw new BadRequestException('Error while creating trade');
+            throw new BadRequestException(err.message);
         }
     }
 
@@ -88,7 +102,7 @@ export class TradeService {
         try {
 
             // If the application encounters an error along the way, the async function will throw an exception and automatically rollback the transaction.
-            await this.prismaClient.$transaction(async (tx) => {
+            return await this.prismaClient.$transaction(async (tx) => {
 
                 const user = await tx.user.findFirst({
                     where: {
@@ -153,7 +167,7 @@ export class TradeService {
 
         } catch (err) {
             this.logger.error(err);
-            throw new BadRequestException('Error while creating trade');
+            throw new BadRequestException(err.message);
         }
 
     }
